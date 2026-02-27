@@ -1,228 +1,284 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Image Converter & Compressor</title>
-
-    <!-- jsPDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-    <!-- Cropper -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+    <title>Premium Age Calculator - Pro Edition</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #a855f7;
+            --bg: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text: #1e293b;
+        }
+
+        body.dark {
+            --bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.9);
+            --text: #f1f5f9;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: #f2f2f2;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            font-family: 'Hind Siliguri', 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            color: var(--text);
             display: flex;
             justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: 0.4s;
         }
+
         .container {
-            background: #fff;
-            padding: 25px;
-            border-radius: 10px;
-            max-width: 600px;
-            width: 100%;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        h2 { text-align: center; }
-
-        .section {
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 1px dashed #ccc;
+            width: 95%;
+            max-width: 500px;
+            perspective: 1000px;
         }
 
-        .drop-zone {
-            border: 2px dashed #007bff;
-            padding: 25px;
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             text-align: center;
-            cursor: pointer;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            color: #007bff;
         }
 
-        .preview-container {
+        .header {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 15px;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
         }
 
-        .preview-img {
-            max-width: 100%;
-            max-height: 250px;
-            border-radius: 5px;
-        }
-
-        .pdf-thumbnail {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-
-        input[type="range"] {
-            width: 100%;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border: none;
-            border-radius: 6px;
+        .theme-toggle {
             cursor: pointer;
-            font-weight: bold;
-            color: white;
-            background: #007bff;
+            font-size: 1.5rem;
+            background: rgba(0,0,0,0.05);
+            width: 45px;
+            height: 45px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
         }
 
-        .btn:hover {
-            opacity: 0.9;
+        h1 { 
+            font-size: 1.8rem; 
+            margin: 0; 
+            background: linear-gradient(to right, #6366f1, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        label { 
+            display: block; 
+            margin-bottom: 10px; 
+            font-weight: 600; 
+            font-size: 15px;
+            opacity: 0.8;
+        }
+
+        input[type="date"] {
+            width: 100%;
+            padding: 15px;
+            border-radius: 15px;
+            border: 2px solid rgba(0,0,0,0.1);
+            background: rgba(255,255,255,0.5);
+            color: var(--text);
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input[type="date"]:focus { border-color: var(--primary); }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(to right, #6366f1, #a855f7);
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.4s;
+            box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.5);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px -5px rgba(99, 102, 241, 0.6);
+        }
+
+        .result-container {
+            margin-top: 35px;
+            display: none;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .age-main {
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            border: 1px dashed var(--primary);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .stat-box {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 18px;
+            border: 1px solid rgba(0,0,0,0.05);
+            font-size: 14px;
+        }
+
+        .stat-box span { 
+            display: block; 
+            font-weight: 700; 
+            color: var(--primary); 
+            font-size: 18px;
+            margin-top: 5px;
+        }
+
+        footer {
+            margin-top: 30px;
+            font-size: 13px;
+            opacity: 0.6;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Advanced Image Tools</h2>
-
-    <!-- Section 1 -->
-    <div class="section">
-        <h3>Image to JPG, Crop & Compress</h3>
-
-        <div class="drop-zone" onclick="document.getElementById('compressInput').click()">
-            এখানে ছবি ক্লিক করে সিলেক্ট করুন
+    <div class="card">
+        <div class="header">
+            <h1>Age Master Pro</h1>
+            <div class="theme-toggle" onclick="toggleTheme()" id="themeIcon">🌙</div>
         </div>
-        <input type="file" id="compressInput" accept="image/*" hidden>
 
-        <div class="preview-container" id="preview1"></div>
-
-        <button class="btn" onclick="compressImage()">Convert & Download JPG</button>
-    </div>
-
-    <!-- Section 2 -->
-    <div class="section">
-        <h3>Multiple Images to PDF</h3>
-
-        <div class="drop-zone" onclick="document.getElementById('pdfInput').click()">
-            একাধিক ছবি সিলেক্ট করুন
+        <div class="input-group">
+            <label for="dob">আপনার জন্ম তারিখ বেছে নিন</label>
+            <input type="date" id="dob">
         </div>
-        <input type="file" id="pdfInput" accept="image/*" multiple hidden>
 
-        <div class="preview-container" id="preview2"></div>
+        <button onclick="calculateAge()">হিসাব করুন ✨</button>
 
-        <button class="btn" onclick="convertToPDF()">Download PDF</button>
+        <div class="result-container" id="resultContainer">
+            <div class="age-main" id="mainAge"></div>
+            
+            <div class="stats-grid">
+                <div class="stat-box">পরবর্তী জন্মদিন 🎂 <span id="nextBirthday">--</span></div>
+                <div class="stat-box">মোট সপ্তাহ 📅 <span id="totalWeeks">--</span></div>
+                <div class="stat-box">মোট দিন ☀️ <span id="totalDays">--</span></div>
+                <div class="stat-box">মোট ঘণ্টা ⏰ <span id="totalHours">--</span></div>
+                <div class="stat-box">মোট মিনিট ⏳ <span id="totalMin">--</span></div>
+                <div class="stat-box">মোট সেকেন্ড ⏱️ <span id="totalSec">--</span></div>
+            </div>
+        </div>
+
+        <footer>
+            © 2026 Pro Age Calculator | Design by AI
+        </footer>
     </div>
 </div>
 
 <script>
-let selectedImage = null;
-
-document.getElementById("compressInput").addEventListener("change", function(e){
-    const file = e.target.files[0];
-    if(!file) return;
-
-    const reader = new FileReader();
-    reader.onload = function(event){
-        selectedImage = event.target.result;
-        document.getElementById("preview1").innerHTML =
-            `<img src="${selectedImage}" class="preview-img">`;
-    };
-    reader.readAsDataURL(file);
-});
-
-function compressImage(){
-    if(!selectedImage) {
-        alert("প্রথমে ছবি সিলেক্ট করুন");
-        return;
+    function toggleTheme() {
+        document.body.classList.toggle("dark");
+        const icon = document.getElementById("themeIcon");
+        icon.innerHTML = document.body.classList.contains("dark") ? "☀️" : "🌙";
     }
 
-    const img = new Image();
-    img.src = selectedImage;
-    img.onload = function(){
-        const canvas = document.createElement("canvas");
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0);
+    function calculateAge() {
+        const dobInput = document.getElementById("dob").value;
+        if (!dobInput) {
+            alert("দয়া করে একটি সঠিক তারিখ দিন!");
+            return;
+        }
 
-        const dataUrl = canvas.toDataURL("image/jpeg", 0.8);
+        const birthDate = new Date(dobInput);
+        const today = new Date();
 
-        const link = document.createElement("a");
-        link.href = dataUrl;
-        link.download = "compressed.jpg";
-        link.click();
-    };
-}
+        if (birthDate > today) {
+            alert("জন্ম তারিখ ভবিষ্যৎ হতে পারে না!");
+            return;
+        }
 
-/* PDF Section */
-let pdfFiles = [];
+        // Logic for Years, Months, Days
+        let years = today.getFullYear() - birthDate.getFullYear();
+        let months = today.getMonth() - birthDate.getMonth();
+        let days = today.getDate() - birthDate.getDate();
 
-document.getElementById("pdfInput").addEventListener("change", function(e){
-    pdfFiles = Array.from(e.target.files);
-    const preview = document.getElementById("preview2");
-    preview.innerHTML = "";
+        if (days < 0) {
+            months--;
+            let lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+            days += lastMonth.getDate();
+        }
+        if (months < 0) {
+            years--;
+            months += 12;
+        }
 
-    pdfFiles.forEach(file=>{
-        const reader = new FileReader();
-        reader.onload = function(event){
-            preview.innerHTML +=
-                `<img src="${event.target.result}" class="pdf-thumbnail">`;
-        };
-        reader.readAsDataURL(file);
-    });
-});
+        // Output Result
+        document.getElementById("mainAge").innerHTML = `🎈 ${years} বছর, ${months} মাস, ${days} দিন`;
 
-async function convertToPDF(){
-    if(pdfFiles.length === 0){
-        alert("ছবি সিলেক্ট করুন");
-        return;
+        // Detailed Stats
+        const diffMs = today - birthDate;
+        const totalSec = Math.floor(diffMs / 1000);
+        const totalMin = Math.floor(totalSec / 60);
+        const totalHrs = Math.floor(totalMin / 60);
+        const totalDays = Math.floor(totalHrs / 24);
+        const totalWeeks = Math.floor(totalDays / 7);
+
+        // Next Birthday
+        let nextBday = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+        if (nextBday < today) nextBday.setFullYear(today.getFullYear() + 1);
+        const daysLeft = Math.ceil((nextBday - today) / (1000 * 60 * 60 * 24));
+
+        // Update UI
+        document.getElementById("totalDays").innerText = totalDays.toLocaleString();
+        document.getElementById("totalWeeks").innerText = totalWeeks.toLocaleString();
+        document.getElementById("totalHours").innerText = totalHrs.toLocaleString();
+        document.getElementById("totalMin").innerText = totalMin.toLocaleString();
+        document.getElementById("totalSec").innerText = totalSec.toLocaleString();
+        document.getElementById("nextBirthday").innerText = daysLeft === 0 ? "আজই শুভ দিন!" : `${daysLeft} দিন পর`;
+
+        document.getElementById("resultContainer").style.display = "block";
     }
-
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF();
-
-    for(let i=0;i<pdfFiles.length;i++){
-        const dataUrl = await readFile(pdfFiles[i]);
-        const img = await loadImg(dataUrl);
-
-        const width = pdf.internal.pageSize.getWidth();
-        const height = (img.height * width) / img.width;
-
-        if(i>0) pdf.addPage();
-        pdf.addImage(img, 'JPEG', 0, 0, width, height);
-    }
-
-    pdf.save("document.pdf");
-}
-
-function readFile(file){
-    return new Promise(resolve=>{
-        const reader = new FileReader();
-        reader.onload = e=>resolve(e.target.result);
-        reader.readAsDataURL(file);
-    });
-}
-
-function loadImg(src){
-    return new Promise(resolve=>{
-        const img = new Image();
-        img.onload = ()=>resolve(img);
-        img.src = src;
-    });
-}
 </script>
 
 </body>
-</html>!DOCTYPE html>
+</html>
+<!DOCTYPE html>
 
 <html>
 <head>

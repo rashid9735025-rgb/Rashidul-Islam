@@ -3,62 +3,63 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Age Calculator</title>
+<title>Ultimate Age Calculator Pro</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 :root {
     --primary: #6366f1;
     --secondary: #a855f7;
-    --bg: #f8fafc;
-    --card-bg: rgba(255, 255, 255, 0.9);
+    --accent: #f43f5e;
+    --card-bg: rgba(255, 255, 255, 0.85);
     --text: #1e293b;
+    --input-bg: #ffffff;
+    --glow: rgba(99, 102, 241, 0.2);
 }
 
 body.dark {
-    --bg: #0f172a;
-    --card-bg: rgba(30, 41, 59, 0.9);
+    --card-bg: rgba(15, 23, 42, 0.9);
     --text: #f1f5f9;
+    --input-bg: #1e293b;
+    --glow: rgba(168, 85, 247, 0.2);
 }
 
 body {
     margin: 0;
-    padding: 0;
-    font-family: 'Hind Siliguri', 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: var(--text);
+    font-family: 'Poppins', 'Hind Siliguri', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #334155);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    transition: 0.4s;
-    overflow: hidden;
+    color: var(--text);
+    transition: 0.5s;
 }
 
-/* Particle Background */
-#particles-js{
+#particles-js {
     position: fixed;
     width: 100%;
     height: 100%;
-    top: 0;
-    left: 0;
     z-index: -1;
 }
 
 .container {
-    width: 95%;
-    max-width: 500px;
+    width: 90%;
+    max-width: 600px;
+    padding: 20px 0;
 }
 
 .card {
     background: var(--card-bg);
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     padding: 40px;
     border-radius: 30px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3), 0 0 20px var(--glow);
+    border: 1px solid rgba(255,255,255,0.1);
     text-align: center;
+    transition: transform 0.3s ease;
 }
 
 .header {
@@ -68,88 +69,145 @@ body {
     margin-bottom: 30px;
 }
 
-.theme-toggle {
-    cursor: pointer;
-    font-size: 1.5rem;
-    background: rgba(0,0,0,0.05);
-    width: 45px;
-    height: 45px;
-    border-radius: 15px;
+.controls {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    gap: 10px;
+}
+
+.toggle {
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 12px;
+    background: rgba(124, 58, 237, 0.1);
+    font-weight: 600;
+    transition: 0.3s;
+    border: 1px solid rgba(124, 58, 237, 0.2);
+}
+
+.toggle:hover {
+    background: var(--primary);
+    color: white;
 }
 
 h1 {
-    font-size: 1.8rem;
     margin: 0;
-    background: linear-gradient(to right, #6366f1, #a855f7);
+    font-size: 1.8rem;
+    font-weight: 700;
+    background: linear-gradient(to right, #818cf8, #c084fc);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-.input-group { margin-bottom: 25px; text-align: left; }
+.input-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+@media (max-width: 480px) {
+    .input-section { grid-template-columns: 1fr; }
+}
+
+.input-group {
+    text-align: left;
+}
 
 label {
-    display: block;
-    margin-bottom: 10px;
     font-weight: 600;
-    font-size: 15px;
+    margin-bottom: 8px;
+    display: block;
+    font-size: 0.9rem;
+    opacity: 0.9;
 }
 
-input[type="date"] {
+input {
     width: 100%;
-    padding: 15px;
-    border-radius: 15px;
-    border: 2px solid rgba(0,0,0,0.1);
-    background: rgba(255,255,255,0.5);
+    padding: 12px;
+    border-radius: 12px;
+    border: 2px solid rgba(0,0,0,0.05);
+    background: var(--input-bg);
     color: var(--text);
-    font-size: 16px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    outline: none;
+    transition: 0.3s;
 }
 
-button {
+input:focus {
+    border-color: var(--primary);
+}
+
+.calc-btn {
     width: 100%;
     padding: 16px;
     border: none;
     border-radius: 15px;
-    background: linear-gradient(to right, #6366f1, #a855f7);
+    background: linear-gradient(45deg, #6366f1, #a855f7);
     color: white;
-    font-size: 18px;
+    font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
+    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+    transition: 0.3s;
+}
+
+.calc-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 25px rgba(99, 102, 241, 0.4);
 }
 
 .result-container {
     margin-top: 35px;
     display: none;
+    animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.main-result {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
+    padding: 20px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.main-result h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: var(--primary);
 }
 
 .stats-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
 }
 
 .stat-box {
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
     padding: 15px;
-    border-radius: 18px;
-    font-size: 14px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
-.stat-box span {
-    display: block;
-    font-weight: 700;
-    color: var(--primary);
-    font-size: 18px;
-    margin-top: 5px;
-}
+.stat-title { font-size: 0.8rem; opacity: 0.7; margin-bottom: 5px; }
+.stat-value { font-size: 1.1rem; font-weight: 700; }
 
 footer {
     margin-top: 30px;
-    font-size: 13px;
+    font-size: 0.8rem;
     opacity: 0.6;
 }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 </style>
 </head>
 
@@ -158,81 +216,196 @@ footer {
 <div id="particles-js"></div>
 
 <div class="container">
-<div class="card">
-<div class="header">
-<h1>Hii Age Calculator</h1>
-<div class="theme-toggle" onclick="toggleTheme()" id="themeIcon">🌙</div>
+    <div class="card">
+        <div class="header">
+            <h1 id="title">Age Master Pro</h1>
+            <div class="controls">
+                <div class="toggle" onclick="toggleLang()" id="langBtn">EN</div>
+                <div class="toggle" onclick="toggleTheme()" id="themeBtn">🌙</div>
+            </div>
+        </div>
+
+        <div class="input-section">
+            <div class="input-group">
+                <label id="dobLabel">জন্ম তারিখ</label>
+                <input type="date" id="dob">
+            </div>
+            <div class="input-group">
+                <label id="targetLabel">আজকের তারিখ</label>
+                <input type="date" id="targetDate">
+            </div>
+        </div>
+
+        <button class="calc-btn" onclick="calculateAge()" id="calcBtn">হিসাব করুন</button>
+
+        <div class="result-container" id="resultContainer">
+            <div class="main-result">
+                <div class="stat-title" id="ageTitle">আপনার বর্তমান বয়স</div>
+                <h2 id="ageText">--</h2>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-title" id="nextBdayTitle">পরবর্তী জন্মদিন</div>
+                    <div class="stat-value" id="nextBirthday" style="color: var(--accent);">--</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-title" id="totalDaysTitle">মোট দিন</div>
+                    <div class="stat-value" id="totalDays">--</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-title" id="totalWeeksTitle">মোট সপ্তাহ</div>
+                    <div class="stat-value" id="totalWeeks">--</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-title" id="totalHoursTitle">মোট ঘণ্টা</div>
+                    <div class="stat-value" id="totalHours">--</div>
+                </div>
+            </div>
+        </div>
+
+        <footer>© 2026 Age Master Pro • All Rights Reserved</footer>
+    </div>
 </div>
 
-<div class="input-group">
-<label for="dob">আপনার জন্ম তারিখ বেছে নিন</label>
-<input type="date" id="dob">
-</div>
-
-<button onclick="calculateAge()">হিসাব করুন ✨</button>
-
-<div class="result-container" id="resultContainer">
-<div class="stats-grid">
-<div class="stat-box">পরবর্তী জন্মদিন 🎂 <span id="nextBirthday">--</span></div>
-<div class="stat-box">মোট দিন ☀️ <span id="totalDays">--</span></div>
-</div>
-</div>
-
-<footer>© 2026 Pro Age Calculator | Design by Rashid</footer>
-</div>
-</div>
-
-<script>
-function toggleTheme(){
-document.body.classList.toggle("dark");
-document.getElementById("themeIcon").innerHTML =
-document.body.classList.contains("dark") ? "☀️" : "🌙";
-}
-
-function calculateAge(){
-const dob=document.getElementById("dob").value;
-if(!dob) return alert("তারিখ দিন!");
-
-const birthDate=new Date(dob);
-const today=new Date();
-const diff=today-birthDate;
-const totalDays=Math.floor(diff/(1000*60*60*24));
-
-let nextBday=new Date(today.getFullYear(),birthDate.getMonth(),birthDate.getDate());
-if(nextBday<today) nextBday.setFullYear(today.getFullYear()+1);
-const daysLeft=Math.ceil((nextBday-today)/(1000*60*60*24));
-
-document.getElementById("totalDays").innerText=totalDays;
-document.getElementById("nextBirthday").innerText=
-daysLeft===0?"আজই শুভ দিন!":daysLeft+" দিন পর";
-
-document.getElementById("resultContainer").style.display="block";
-}
-</script>
-
-<!-- Particle Script -->
 <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-
 <script>
-particlesJS("particles-js",{
-particles:{
-number:{value:90},
-size:{value:3},
-color:{value:"#ffffff"},
-line_linked:{
-enable:true,
-distance:150,
-color:"#ffffff",
-opacity:0.3,
-width:1
-},
-move:{enable:true,speed:2}
-},
-interactivity:{
-events:{
-onhover:{enable:true,mode:"repulse"}
+let currentLang = "bn";
+
+// Set default target date to today
+document.getElementById('targetDate').valueAsDate = new Date();
+
+function toggleTheme() {
+    document.body.classList.toggle("dark");
+    document.getElementById("themeBtn").innerText = document.body.classList.contains("dark") ? "☀️" : "🌙";
 }
+
+function toggleLang() {
+    currentLang = currentLang === "bn" ? "en" : "bn";
+    document.getElementById("langBtn").innerText = currentLang === "bn" ? "EN" : "BN";
+    
+    const translations = {
+        bn: {
+            title: "Age Master Pro",
+            dob: "জন্ম তারিখ",
+            target: "হিসাবের তারিখ",
+            btn: "হিসাব করুন",
+            ageT: "আপনার বর্তমান বয়স",
+            nextT: "পরবর্তী জন্মদিন",
+            daysT: "মোট দিন",
+            weeksT: "মোট সপ্তাহ",
+            hoursT: "মোট ঘণ্টা",
+            alert: "অনুগ্রহ করে তারিখ নির্বাচন করুন!"
+        },
+        en: {
+            title: "Age Master Pro",
+            dob: "Date of Birth",
+            target: "Calculate at Date",
+            btn: "Calculate Now",
+            ageT: "Your Current Age",
+            nextT: "Next Birthday",
+            daysT: "Total Days",
+            weeksT: "Total Weeks",
+            hoursT: "Total Hours",
+            alert: "Please select a date!"
+        }
+    };
+
+    const t = translations[currentLang];
+    document.getElementById("title").innerText = t.title;
+    document.getElementById("dobLabel").innerText = t.dob;
+    document.getElementById("targetLabel").innerText = t.target;
+    document.getElementById("calcBtn").innerText = t.btn;
+    document.getElementById("ageTitle").innerText = t.ageT;
+    document.getElementById("nextBdayTitle").innerText = t.nextT;
+    document.getElementById("totalDaysTitle").innerText = t.daysT;
+    document.getElementById("totalWeeksTitle").innerText = t.weeksT;
+    document.getElementById("totalHoursTitle").innerText = t.hoursT;
 }
+
+// Convert numbers to Bengali
+function toBeneric(num) {
+    if (currentLang === "en") return num.toLocaleString();
+    const bnNums = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+    return num.toString().replace(/\d/g, d => bnNums[d]);
+}
+
+function calculateAge() {
+    const dobValue = document.getElementById("dob").value;
+    const targetValue = document.getElementById("targetDate").value;
+
+    if (!dobValue) {
+        alert(currentLang === "bn" ? "অনুগ্রহ করে জন্ম তারিখ দিন!" : "Please select DOB!");
+        return;
+    }
+
+    const birthDate = new Date(dobValue);
+    const targetDate = new Date(targetValue);
+
+    if (birthDate > targetDate) {
+        alert(currentLang === "bn" ? "জন্ম তারিখ আজকের চেয়ে বেশি হতে পারে না!" : "DOB cannot be in future!");
+        return;
+    }
+
+    let years = targetDate.getFullYear() - birthDate.getFullYear();
+    let months = targetDate.getMonth() - birthDate.getMonth();
+    let days = targetDate.getDate() - birthDate.getDate();
+
+    if (days < 0) {
+        months--;
+        days += new Date(targetDate.getFullYear(), targetDate.getMonth(), 0).getDate();
+    }
+    if (months < 0) {
+        years--;
+        months += 12;
+    }
+
+    // Statistics calculations
+    const diffTime = Math.abs(targetDate - birthDate);
+    const totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    const totalWeeks = Math.floor(totalDays / 7);
+    const totalHours = totalDays * 24;
+
+    // Next Birthday
+    let nextBday = new Date(targetDate.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+    if (nextBday < targetDate) {
+        nextBday.setFullYear(targetDate.getFullYear() + 1);
+    }
+    const daysLeft = Math.ceil((nextBday - targetDate) / (1000 * 60 * 60 * 24));
+
+    // Display Result
+    const resultContainer = document.getElementById("resultContainer");
+    resultContainer.style.display = "block";
+
+    if (currentLang === "bn") {
+        document.getElementById("ageText").innerText = `${toBeneric(years)} বছর, ${toBeneric(months)} মাস, ${toBeneric(days)} দিন`;
+        document.getElementById("nextBirthday").innerText = daysLeft === 0 || daysLeft === 366 ? "আজই জন্মদিন! 🎉" : `${toBeneric(daysLeft)} দিন পর`;
+    } else {
+        document.getElementById("ageText").innerText = `${years} Years, ${months} Months, ${days} Days`;
+        document.getElementById("nextBirthday").innerText = daysLeft === 0 || daysLeft === 366 ? "Happy Birthday! 🎉" : `${daysLeft} Days to go`;
+    }
+
+    document.getElementById("totalDays").innerText = toBeneric(totalDays);
+    document.getElementById("totalWeeks").innerText = toBeneric(totalWeeks);
+    document.getElementById("totalHours").innerText = toBeneric(totalHours);
+}
+
+// Particles setup
+particlesJS("particles-js", {
+    particles: {
+        number: { value: 60, density: { enable: true, value_area: 800 } },
+        color: { value: "#ffffff" },
+        shape: { type: "circle" },
+        opacity: { value: 0.2, random: true },
+        size: { value: 3, random: true },
+        line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.1, width: 1 },
+        move: { enable: true, speed: 1.5, direction: "none", random: false, straight: false, out_mode: "out", bounce: false }
+    },
+    interactivity: {
+        detect_on: "canvas",
+        events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" }, resize: true }
+    },
+    retina_detect: true
 });
 </script>
 
@@ -247,7 +420,7 @@ onhover:{enable:true,mode:"repulse"}
 </head>
 <body>
   <h1>
-   
+    
   </h1>
 </body>
 </html>
